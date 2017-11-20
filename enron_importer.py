@@ -4,7 +4,7 @@ import os
 import pickle
 import sys
 
-from enron_email_importer.importers.mongo_importer import MongoImporter
+from importers.mongo_importer import MongoImporter
 
 mongodb_config_file = "./config/mongo_config.yml"
 

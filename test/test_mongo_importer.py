@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
-from enron_email_importer.importers.mongo_importer import MongoImporter
+from importers.mongo_importer import MongoImporter
 
 
 class TestMongoImporter(TestCase):

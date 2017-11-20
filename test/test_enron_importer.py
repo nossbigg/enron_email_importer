@@ -1,14 +1,14 @@
 from unittest import TestCase
 from unittest.mock import patch, call
 
-from enron_email_importer import enron_importer
+import enron_importer
 
 
 class TestEnronImporter(TestCase):
     def test_enron_importer_fail_missing_data_directory(self):
         self.assertFalse(enron_importer.main([]))
 
-    @patch('enron_email_importer.enron_importer.MongoImporter')
+    @patch('enron_importer.MongoImporter')
     @patch('os.path.abspath')
     @patch('pickle.load')
     @patch('gzip.open')
