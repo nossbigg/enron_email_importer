@@ -29,7 +29,26 @@ def parse_data_dir(data_directory_path):
         user_data_dict = get_dict_from_gz(gz_file_path)
         user_name, user_data = user_data_dict.popitem()
 
-        mongo_importer.import_to_mongo(user_name, user_data)
+        user_data_flattened = flatten_user_data(user_name, user_data)
+
+        mongo_importer.import_to_mongo(user_name, user_data_flattened)
+
+
+def flatten_user_data(user_name, user_data):
+    flattened_user_data = []
+
+    for folder_name, messages in user_data.items():
+        for message_name, message_fields in messages.items():
+            message = {
+                'user_name': user_name,
+                'folder_name': folder_name,
+                'message_name': message_name
+            }
+            message.update(message_fields)
+
+            flattened_user_data.append(message)
+
+    return flattened_user_data
 
 
 def get_gz_files(data_directory_path):

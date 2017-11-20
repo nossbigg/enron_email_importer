@@ -11,25 +11,7 @@ class MongoImporter:
 
     def import_to_mongo(self, user_name, user_data):
         collection = self.get_collection(user_name)
-
-        user_data_mongo = self.convert_to_mongo_insert_format(user_data)
-        collection.insert_many(user_data_mongo)
-
-    @staticmethod
-    def convert_to_mongo_insert_format(user_data_dict):
-        return [{folder_name: messages} for folder_name, messages in
-                MongoImporter.remove_dots_from_keys(user_data_dict).items()]
-
-    @staticmethod
-    def remove_dots_from_keys(data_dict):
-        new_dict = {}
-        for key, value in data_dict.items():
-            if isinstance(value, dict):
-                value = MongoImporter.remove_dots_from_keys(value)
-            key_without_dots = key.replace('.', '')
-            new_dict[key_without_dots] = value
-
-        return new_dict
+        collection.insert_many(user_data)
 
     def get_collection(self, collection_name):
         return self.db[collection_name]
