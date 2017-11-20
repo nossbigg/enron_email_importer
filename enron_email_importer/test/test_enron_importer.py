@@ -8,6 +8,8 @@ class TestEnronImporter(TestCase):
     def test_enron_importer_fail_missing_data_directory(self):
         self.assertFalse(enron_importer.main([]))
 
+    @patch('enron_email_importer.enron_importer.MongoImporter')
+    @patch('os.path.abspath')
     @patch('pickle.load')
     @patch('gzip.open')
     @patch('glob.glob')
@@ -16,10 +18,13 @@ class TestEnronImporter(TestCase):
                                         mock_os_path_join,
                                         mock_glob_glob,
                                         mock_gzip_open,
-                                        mock_pickle_load):
+                                        mock_pickle_load,
+                                        mock_os_path_abspath,
+                                        mock_mongo_importer):
         mock_os_path_join.return_value = "some-dir"
         mock_glob_glob.return_value = ['file-path-1', 'file-path-2']
         mock_pickle_load.side_effect = lambda x: {'some-key': 'some-value'}
+        mock_os_path_abspath.return_value = "some-dir"
 
         result = enron_importer.main(["total-garbage", "some-data-dir"])
 
